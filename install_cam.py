@@ -11,10 +11,10 @@ def apt_install(packages):
     run(["sudo", "apt", "install", "-y"] + packages)
 
 def setup_venv():
-    run(["python3", "-m", "venv", "venv"])
-    pip = "./venv/bin/pip"
-    run([pip, "install", "--upgrade", "pip"])
-    run([pip, "install", "flask", "pillow"])
+    run(["python3", "-m", "venv", "venv", "--system-site-packages"])
+    python = "./venv/bin/python"
+    run([python, "-m", "pip", "install", "--upgrade", "pip"])
+    run([python, "-m", "pip", "install", "flask", "pillow"])
 
 def create_dirs():
     os.makedirs("photos", exist_ok=True)
