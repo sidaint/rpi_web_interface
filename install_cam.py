@@ -11,10 +11,10 @@ def apt_install(packages):
     run(["sudo", "apt", "install", "-y"] + packages)
 
 def setup_venv():
-    run(["python3", "-m", "venv", "venv", "--system-site-packages"])
-    python = "./venv/bin/python"
+    run(["python3", "-m", "venv", "space_rpi_cam_env", "--system-site-packages"])
+    python = "./space_rpi_cam_env/bin/python"
     run([python, "-m", "pip", "install", "--upgrade", "pip"])
-    run([python, "-m", "pip", "install", "flask", "pillow"])
+    run([python, "-m", "pip", "install", "flask", "pillow", "setproctitle"])
 
 def create_dirs():
     os.makedirs("photos", exist_ok=True)
@@ -22,13 +22,13 @@ def create_dirs():
 
 def create_service():
     service_content = f"""[Unit]
-Description=MotionEye Clone Web UI
+Description=Space RPi Cam Web UI
 After=network.target
 
 [Service]
 User={os.getenv('USER')}
 WorkingDirectory={str(Path.cwd())}
-ExecStart={str(Path.cwd())}/venv/bin/python {str(Path.cwd())}/app.py
+ExecStart={str(Path.cwd())}/space_rpi_cam_env/bin/python {str(Path.cwd())}/app.py
 Restart=always
 Environment=FLASK_ENV=production
 Environment=PYTHONUNBUFFERED=1
@@ -36,8 +36,8 @@ Environment=PYTHONUNBUFFERED=1
 [Install]
 WantedBy=multi-user.target
 """
-    service_path = "/etc/systemd/system/motioneye_clone.service"
-    temp_path = "motioneye_clone.service"
+    service_path = "/etc/systemd/system/space_rpi_cam.service"
+    temp_path = "space_rpi_cam.service"
 
     with open(temp_path, "w") as f:
         f.write(service_content)
@@ -45,11 +45,11 @@ WantedBy=multi-user.target
     run(["sudo", "mv", temp_path, service_path])
     run(["sudo", "systemctl", "daemon-reexec"])
     run(["sudo", "systemctl", "daemon-reload"])
-    run(["sudo", "systemctl", "enable", "motioneye_clone"])
-    run(["sudo", "systemctl", "start", "motioneye_clone"])
+    run(["sudo", "systemctl", "enable", "space_rpi_cam"])
+    run(["sudo", "systemctl", "start", "space_rpi_cam"])
 
 def main():
-    print("🚀 Starting MotionEye Clone installation")
+    print("🚀 Starting Space RPi Cam installation")
 
     apt_install([
         "python3-venv", "python3-picamera2", "python3-libcamera", "libcap-dev",

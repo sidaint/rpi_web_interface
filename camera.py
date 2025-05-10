@@ -1,4 +1,4 @@
-# motioneye_clone/camera.py
+# space_rpi_cam/camera.py
 from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
 from picamera2.outputs import FileOutput
@@ -127,7 +127,7 @@ class CameraHandler:
         self.timelapse_running = False
         if self.timelapse_thread:
             self.timelapse_thread.join()
-            self._assemble_timelapse_video()
+#            self._assemble_timelapse_video()
 
     def _timelapse_loop(self):
         count = 0

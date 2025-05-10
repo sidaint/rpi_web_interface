@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PiCam Interface</title>
-  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .disk-label {
       color: white;
@@ -16,8 +16,12 @@
       fetch('/recording_status')
         .then(response => response.json())
         .then(data => {
+          const badge = document.getElementById('timelapse-badge');
+          const text = document.getElementById('timelapse-text');
+
           document.getElementById('recording-badge').style.display = data.recording ? 'inline-block' : 'none';
-          document.getElementById('timelapse-badge').style.display = data.timelapse ? 'inline-block' : 'none';
+          badge.style.display = data.timelapse ? 'inline-block' : (text.innerText ? 'inline-block' : 'none');
+
           if (data.recording) {
             document.getElementById('recording-timer').innerText = `Recording: ${data.duration}s`;
           } else {
@@ -31,13 +35,15 @@
 <body class="bg-dark text-light d-flex flex-column min-vh-100">
 <div class="container mt-4 flex-grow-1">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>📷 Raspberry Pi Camera UI</h2>
+    <h2>📷 Space RPi Camera UI</h2>
     <h5 class="text-end">🕒 {{ current_time }}</h5>
   </div>
 
   <div class="mb-3">
     <span id="recording-badge" class="badge bg-danger" style="display: {{ 'inline-block' if recording else 'none' }}">● Recording</span>
-    <span id="timelapse-badge" class="badge bg-warning text-dark" style="display: {{ 'inline-block' if timelapse else 'none' }}">⏱ Timelapse</span>
+    <span id="timelapse-badge" class="badge bg-warning text-dark" style="display: {{ 'inline-block' if timelapse or timelapse_badge_text else 'none' }}">
+      ⏱ {{ timelapse_badge_text }}
+    </span>    
     <span id="recording-timer" class="ms-2"></span>
   </div>
 
@@ -100,6 +106,7 @@
         </div>
         <button type="submit" class="btn btn-warning w-100">Schedule Timelapse</button>
       </form>
+
     </div>
 
     <div class="col-md-6">
@@ -107,20 +114,19 @@
 
       <div class="text-center mb-3">
         <a href="/take_photo" class="btn btn-outline-light m-2">📸 Take Photo</a>
-        <a href="/start_recording" class="btn btn-outline-success m-2">🎥 Start Recording</a>
-        <a href="/stop_recording" class="btn btn-outline-danger m-2">🛑 Stop Recording</a>
+        <a href="/toggle_recording" id="toggle-recording-btn" class="btn btn-outline-success m-2">🎥 Start Recording</a>
         <a href="/start_timelapse" class="btn btn-outline-warning m-2">⏱️ Start Timelapse</a>
-        <a href="/stop_timelapse" class="btn btn-outline-secondary m-2">❌ Stop Timelapse</a>
+        <a href="/stop_timelapse" class="btn btn-outline-secondary m-2">❌ Cancel Timelapse</a>
         <a href="/gallery/photos" class="btn btn-outline-info m-2">🖼️ View Photos</a>
         <a href="/gallery/videos" class="btn btn-outline-info m-2">🎬 View Videos</a>
-        <a href="/logout" class="btn btn-outline-danger m-2">🔓 Logout</a>
+        <a href="/account" class="btn btn-outline-light m-2">👤 Account</a>
       </div>
 
-    <form method="get" action="/toggle_feed">
+      <form method="get" action="/toggle_feed">
         <button class="btn btn-warning mb-2">
-            {{ 'Disable Live Feed' if live_feed_enabled else 'Enable Live Feed' }}
+          {{ 'Disable Live Feed' if live_feed_enabled else 'Enable Live Feed' }}
         </button>
-    </form>
+      </form>
 
       <div class="px-3">
         <div class="disk-label mb-1">💾 Disk Usage: {{ disk_free }} / {{ disk_total }} free</div>
@@ -133,4 +139,3 @@
 </div>
 </body>
 </html>
-
