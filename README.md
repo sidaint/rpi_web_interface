@@ -83,7 +83,7 @@ http://<your_pi_ip>:5000
 - `photos/` — All photos and timelapse folders
 - `videos/` — All recorded videos
 - `templates/` — HTML templates
-- `static/` — CSS, JS, and icons
+- `static/` — CSS
 - `app.py` — Main Flask application
 - `camera.py` — Camera controls and logic
 - `install_cam.py` — Installer that creates the systemd service and installs everything required
