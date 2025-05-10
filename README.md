@@ -1,4 +1,4 @@
-# 🚀 space_rpi_cam – Raspberry Pi Camera Web Interface
+# 🚀 Space RPi Cam – Raspberry Pi Camera Web Interface
 
 **Space RPi Cam** is a lightweight, full-featured web interface for Raspberry Pi camera modules. It offers live preview, photo capture, timelapse scheduling, and video recording — all through a responsive, password-protected UI.
 
