@@ -17,7 +17,6 @@ Built with Python (Flask) and designed for low-resource devices like the Raspber
 **Password-protected web interface** (credentials stored in editable `credentials.json`)
 **Live disk usage monitor** with free space indicator
 **Manual video creation** from timelapse folders
-**Hotspot fallback** (auto Wi-Fi AP if no network found) *(optional)*
 **Live feed toggle** to save CPU resources
 
 ---
